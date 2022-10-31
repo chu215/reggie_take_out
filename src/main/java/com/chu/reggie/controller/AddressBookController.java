@@ -66,5 +66,19 @@ public class AddressBookController {
         return R.error("没有找到该对象");
     }
 
+    @GetMapping("/default")
+    public R<AddressBook> getDefault() {
+        LambdaQueryWrapper<AddressBook> queryWrapper = new LambdaQueryWrapper<>();
 
+        queryWrapper.eq(AddressBook::getIsDefault, 1);
+        queryWrapper.eq(AddressBook::getUserId, BaseContext.getCurrentId());
+
+        AddressBook addressBook = addressBookService.getOne(queryWrapper);
+
+        if (addressBook != null) {
+            return R.success(addressBook);
+        } else {
+            return R.error("没有找到该对象");
+        }
+    }
 }
